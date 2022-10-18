@@ -13,13 +13,13 @@ func formHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintln(w, "POST request successful")
 	name := r.FormValue("name")
-	address := r.FormValue("address")
+	planet := r.FormValue("planet")
 	fmt.Fprintf(w, "Name = %s\n", name)
-	fmt.Fprintf(w, "Address = %s\n", address)
+	fmt.Fprintf(w, "Planet = %s\n", planet)
 }
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/hello" {
+func cookieHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/cookie" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
@@ -27,13 +27,13 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "method is not supported", http.StatusNotFound)
 		return
 	}
-	fmt.Fprintf(w, "Hello!")
+	fmt.Fprintf(w, "The cookie jar is empty...")
 }
 func main() {
 	fileServer := http.FileServer(http.Dir("./static"))
 	http.Handle("/", fileServer)
 	http.HandleFunc("/form", formHandler)
-	http.HandleFunc("/hello", helloHandler)
+	http.HandleFunc("/cookie", cookieHandler)
 
 	fmt.Println("Starting server at port 8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
